@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analisis Nilai Siswa - Objek Math</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e3f2fd, #f8f9fa);
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      padding: 20px 30px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+    button {
+      display: block;
+      margin: 20px auto;
+      background-color: #007bff;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      text-align: center;
+      background-color: #fefefe;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+    th {
+      background-color: #0d6efd;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .card {
+      margin-top: 30px;
+      background: #f9fbff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    .card h2 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      background: #e9f1ff;
+      margin: 8px 0;
+      padding: 10px 15px;
+      border-radius: 6px;
+    }
+    span {
+      font-weight: bold;
+      color: #1e3a8a;
+    }
+
+    @media (max-width: 600px) {
+      table {
+        font-size: 14px;
+      }
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Analisis Nilai Siswa SMK FATAHILLAH</h1>
+
+    <button onclick="analisisNilai()">Buat Nilai Baru</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nilai</th>
+          <th>Huruf</th>
+          <th>Bonus</th>
+          <th>Nilai Akhir</th>
+          <th>Skor Keunggulan</th>
+        </tr>
+      </thead>
+      <tbody id="tabel-nilai"></tbody>
+    </table>
+
+    <div class="card">
+      <h2>Hasil Statistik</h2>
+      <ul>
+        <li>Nilai Tertinggi: <span id="max"></span></li>
+        <li>Nilai Terendah: <span id="min"></span></li>
+        <li>Rata-rata: <span id="rata"></span></li>
+        <li>Selisih Max-Min: <span id="selisih"></span></li>
+        <li>Akar Kuadrat Rata-rata: <span id="akar"></span></li>
+        <li>Pembulatan ke atas: <span id="ceil"></span></li>
+        <li>Pembulatan ke bawah: <span id="floor"></span></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    function analisisNilai() {
+      let nilaiSiswa = [];
+      for (let i = 0; i < 10; i++) {
+        let nilai = Math.floor(Math.random() * 61) + 40; 
+        nilaiSiswa.push(nilai);
+      }
+
+      let max = Math.max(...nilaiSiswa);
+      let min = Math.min(...nilaiSiswa);
+      let total = nilaiSiswa.reduce((a, b) => a + b, 0);
+      let rata = total / nilaiSiswa.length;
+
+      let tabel = "";
+      for (let i = 0; i < nilaiSiswa.length; i++) {
+        let n = nilaiSiswa[i];
+        let huruf;
+        if (n >= 85) huruf = "A";
+        else if (n >= 75) huruf = "B";
+        else if (n >= 65) huruf = "C";
+        else if (n >= 55) huruf = "D";
+        else huruf = "E";
+
+        let bonus = Math.floor(Math.random() * 10) + 1;
+        let akhir = n + bonus;
+        let skor = Math.pow(akhir / 10, 2).toFixed(2);
+
+        tabel += `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${n}</td>
+            <td>${huruf}</td>
+            <td>${bonus}</td>
+            <td>${akhir}</td>
+            <td>${skor}</td>
+          </tr>
+        `;
+      }
+      document.getElementById("tabel-nilai").innerHTML = tabel;
+
+      document.getElementById("max").textContent = max;
+      document.getElementById("min").textContent = min;
+      document.getElementById("rata").textContent = rata.toFixed(1);
+      document.getElementById("selisih").textContent = max - min;
+      document.getElementById("akar").textContent = Math.sqrt(rata).toFixed(2);
+      document.getElementById("ceil").textContent = Math.ceil(rata);
+      document.getElementById("floor").textContent = Math.floor(rata);
+    }
+
+    window.onload = analisisNilai;
+  </script>
+</body>
+</html>
